@@ -1,4 +1,4 @@
-package com.bukkit.jjfs85.BetterShop;
+package org.cvpcs.bukkit.economyshop;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,25 +23,28 @@ import com.nijikokun.bukkit.Permissions.Permissions;
 import com.nijikokun.bukkit.iConomy.iConomy;
 
 /**
- * BetterShop for Bukkit
+ * EconomyShop for Bukkit
  * 
  * @author jjfs85
  */
-public class BetterShop extends JavaPlugin {
+public class EconomyShop extends JavaPlugin {
 	private final static Logger logger = Logger.getLogger("Minecraft");
 	private final static String commandPrefix = "";
 	private final static String messagePrefix = "§c[§7SHOP§c] ";
-	private static final String name = "BetterShop";
+	private static final String name = "EconomyShop";
 	private final HashMap<Integer, ItemStack> leftover = new HashMap<Integer, ItemStack>();
-	private final BSPriceList PriceList = new BSPriceList();
+	private final ESPriceList PriceList = new ESPriceList();
 	private static PermissionHandler Permissions = null;
 	private final static File pluginFolder = new File("plugins", name);
+	private final TransactionDB transactionDB;
 
-	public BetterShop(PluginLoader pluginLoader, Server instance,
+	public EconomyShop(PluginLoader pluginLoader, Server instance,
 			PluginDescriptionFile desc, File folder, File plugin,
 			ClassLoader cLoader) throws IOException {
 		super(pluginLoader, instance, desc, folder, plugin, cLoader);
 
+		transactionDB = new TransactionDB(this);
+		
 		// NOTE: Event registration should be done in onEnable not here as all
 		// events are unregistered when a plugin is disabled
 	}
@@ -86,16 +89,16 @@ public class BetterShop extends JavaPlugin {
 
 		// EXAMPLE: Custom code, here we just output some info so we can check
 		// all is well
-		logger.info("BetterShop now unloaded");
+		logger.info("EconomyShop now unloaded");
 	}
 
 	public void setupPermissions() {
 		Plugin test = this.getServer().getPluginManager().getPlugin(
 				"Permissions");
 
-		if (BetterShop.Permissions == null) {
+		if (EconomyShop.Permissions == null) {
 			if (test != null) {
-				BetterShop.Permissions = ((Permissions) test).getHandler();
+				EconomyShop.Permissions = ((Permissions) test).getHandler();
 			} else {
 				logger.info(Messaging.bracketize(name)
 						+ " Permission system not enabled. Disabling plugin.");
@@ -138,7 +141,7 @@ public class BetterShop extends JavaPlugin {
 
 	public boolean check(CommandSender player, String[] s) {
 		MaterialData mat;
-		if (!hasPermission(player, "BetterShop.user.check")) {
+		if (!hasPermission(player, "EconomyShop.user.check")) {
 			sendMessage(player, "OI! You don't have permission to do that!");
 			return true;
 		}
@@ -166,7 +169,7 @@ public class BetterShop extends JavaPlugin {
 	public boolean list(CommandSender player, String[] s) {
 		int pagesize = 9;
 		int page = 0;
-		if (!hasPermission(player, "BetterShop.user.list")) {
+		if (!hasPermission(player, "EconomyShop.user.list")) {
 			sendMessage(player, "OI! You don't have permission to do that!");
 			return true;
 		}
@@ -222,7 +225,7 @@ public class BetterShop extends JavaPlugin {
 		int amtleft = 0;
 		int amtbought = 1;
 		int cost = 0;
-		if (!hasPermission(player, "BetterShop.user.buy")) {
+		if (!hasPermission(player, "EconomyShop.user.buy")) {
 			sendMessage(player, "OI! You don't have permission to do that!");
 			return true;
 		}
@@ -236,6 +239,7 @@ public class BetterShop extends JavaPlugin {
 				item = itemDb.get(s[0]);
 			} catch (Exception e2) {
 				sendMessage(player, "What is " + s[0] + "?");
+				return true;
 			}
 			try {
 				price = PriceList.getBuyPrice(item.getItemTypeId());
@@ -253,6 +257,12 @@ public class BetterShop extends JavaPlugin {
 				sendMessage(player, "...Nice try.");
 				return true;
 			}
+			
+			// adjust price based on Q value
+			double Q = transactionDB.getPurchaseQValue(item.getItemTypeId());
+			double m = 0.0; // set this to 0 until we allow people to set it
+			price += (int)(m * Q);
+			
 			cost = amtbought * price;
 			try {
 				if (debit(player, cost)) {
@@ -277,7 +287,14 @@ public class BetterShop extends JavaPlugin {
 								+ iConomy.currency
 								+ " for what you couldn't hold.");
 						credit(player, cost);
+						
+						// adjust actual amount bought
+						amtbought -= amtleft;
 					}
+					
+					// set transaction
+					transactionDB.savePurchase(item.getItemTypeId(), amtbought);
+					
 					return true;
 				} else {
 					sendMessage(player, "Not enough money.");
@@ -291,8 +308,9 @@ public class BetterShop extends JavaPlugin {
 
 	public boolean sell(CommandSender player, String[] s) {
 		int amtSold = 1;
+		int price = 0;
 		MaterialData item = new MaterialData(0);
-		if (!hasPermission(player, "BetterShop.user.sell")) {
+		if (!hasPermission(player, "EconomyShop.user.sell")) {
 			sendMessage(player, "OI! You don't have permission to do that!");
 			return true;
 		}
@@ -319,25 +337,41 @@ public class BetterShop extends JavaPlugin {
 						"Why would you want to buy at the selling price!?");
 				return true;
 			}
+			
+			try {
+				price = PriceList.getSellPrice(item.getItemTypeId());
+			} catch (Exception e1) {
+				sendMessage(player, "That's not available for purchase!");
+				return true;
+			}
+			
 			itemsToSell.setAmount(amtSold);
 			PlayerInventory inv = ((Player) player).getInventory();
 			leftover.clear();
 			leftover.putAll(inv.removeItem(itemsToSell));
+
+			// adjust price based on Q value
+			double Q = transactionDB.getSaleQValue(item.getItemTypeId());
+			double m = 0.0; // set this to 0 until we allow people to set it
+			price += (int)(m * Q);
+			
 			if (leftover.size() > 0) {
 				amtSold = amtSold - leftover.get(0).getAmount();
 				sendMessage(player, "You only had " + amtSold + ".");
 			}
 			try {
-				credit(player, amtSold
-						* PriceList.getSellPrice(item.getItemTypeId()));
+				credit(player, amtSold * price);
 				sendMessage(player, "You sold " + amtSold + " "
 						+ itemDb.getName(item.getItemTypeId(), item.getData())
-						+ " at " + PriceList.getSellPrice(item.getItemTypeId())
-						+ " each for a total of " + amtSold
-						* PriceList.getSellPrice(item.getItemTypeId()));
+						+ " at " + price
+						+ " each for a total of " + amtSold * price);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			
+			// save the transaction
+			transactionDB.saveSale(item.getItemTypeId(), amtSold);
+			
 			return true;
 		}
 	}
@@ -353,7 +387,7 @@ public class BetterShop extends JavaPlugin {
 			sendMessage(player, "What's " + s[0] + "?");
 			return false;
 		}
-		if (!hasPermission(player, "BetterShop.admin.add")) {
+		if (!hasPermission(player, "EconomyShop.admin.add")) {
 			sendMessage(player, "OI! You don't have permission to do that!");
 			return true;
 		}
@@ -376,7 +410,7 @@ public class BetterShop extends JavaPlugin {
 	}
 
 	public boolean remove(CommandSender player, String[] s) {
-		if ((!hasPermission(player, "BetterShop.admin.remove"))) {
+		if ((!hasPermission(player, "EconomyShop.admin.remove"))) {
 			sendMessage(player, "OI! You don't have permission to do that!");
 			return true;
 		}
@@ -394,7 +428,7 @@ public class BetterShop extends JavaPlugin {
 	}
 
 	public boolean load(CommandSender player) {
-		if (!hasPermission(player, "BetterShop.admin.load")) {
+		if (!hasPermission(player, "EconomyShop.admin.load")) {
 			sendMessage(player, "OI! You don't have permission to do that!");
 			return true;
 		}
@@ -410,7 +444,7 @@ public class BetterShop extends JavaPlugin {
 	}
 
 	public boolean help(CommandSender player) {
-		if (!hasPermission(player, "BetterShop.user.help")) {
+		if (!hasPermission(player, "EconomyShop.user.help")) {
 			sendMessage(player, "OI! You don't have permission to do that!");
 			return true;
 		}
@@ -423,7 +457,7 @@ public class BetterShop extends JavaPlugin {
 				+ "shopsell [item] <amount> - Sell items");
 		sendMessage(player, "/" + commandPrefix
 				+ "shopcheck [item] - Check prices of item");
-		if (BetterShop.hasPermission(player, "BetterShop.admin")) {
+		if (EconomyShop.hasPermission(player, "EconomyShop.admin")) {
 			sendMessage(player, "**-------- Admin commands --------**");
 			sendMessage(player, "/" + commandPrefix
 					+ "shopadd [item] [$buy] [$sell] - Add an item to the shop");
@@ -438,7 +472,7 @@ public class BetterShop extends JavaPlugin {
 
 	private static boolean hasPermission(CommandSender player, String string) {
 		try {
-			if (BetterShop.Permissions.has((Player) player, string)) {
+			if (EconomyShop.Permissions.has((Player) player, string)) {
 				return true;
 			}
 			return false;
@@ -464,16 +498,16 @@ public class BetterShop extends JavaPlugin {
 	private final boolean debit(CommandSender player, int amount)
 			throws Exception {
 		int balance = 0;
-		Object db = BetterShop.class.getClassLoader().loadClass(
+		Object db = EconomyShop.class.getClassLoader().loadClass(
 				"com.nijikokun.bukkit.iConomy.iConomy").getField("db")
 				.get(null);
-		balance = (Integer) BetterShop.class.getClassLoader().loadClass(
+		balance = (Integer) EconomyShop.class.getClassLoader().loadClass(
 				"com.nijikokun.bukkit.iConomy.Database").getMethod(
 				"get_balance", String.class).invoke(db,
 				((Player) player).getName());
 		if (balance < amount)
 			return false;
-		BetterShop.class.getClassLoader().loadClass(
+		EconomyShop.class.getClassLoader().loadClass(
 				"com.nijikokun.bukkit.iConomy.Database").getMethod(
 				"set_balance", String.class, Integer.TYPE).invoke(db,
 				((Player) player).getName(), balance - amount);
@@ -483,14 +517,14 @@ public class BetterShop extends JavaPlugin {
 	private final boolean credit(CommandSender player, int amount)
 			throws Exception {
 		int balance = 0;
-		Object db = BetterShop.class.getClassLoader().loadClass(
+		Object db = EconomyShop.class.getClassLoader().loadClass(
 				"com.nijikokun.bukkit.iConomy.iConomy").getField("db")
 				.get(null);
-		balance = (Integer) BetterShop.class.getClassLoader().loadClass(
+		balance = (Integer) EconomyShop.class.getClassLoader().loadClass(
 				"com.nijikokun.bukkit.iConomy.Database").getMethod(
 				"get_balance", String.class).invoke(db,
 				((Player) player).getName());
-		BetterShop.class.getClassLoader().loadClass(
+		EconomyShop.class.getClassLoader().loadClass(
 				"com.nijikokun.bukkit.iConomy.Database").getMethod(
 				"set_balance", String.class, Integer.TYPE).invoke(db,
 				((Player) player).getName(), balance + amount);

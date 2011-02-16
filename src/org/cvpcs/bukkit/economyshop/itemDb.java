@@ -6,7 +6,7 @@
  * Ok, now I've had to edit it to add subtype support for my plugin. ~jjfs85
  */
 
-package com.bukkit.jjfs85.BetterShop;
+package org.cvpcs.bukkit.economyshop;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -103,7 +103,7 @@ public class itemDb {
 	}
 
 	public static String getName(int i, byte d) throws Exception {
-		File file = new File("plugins/BetterShop", "items.db");
+		File file = new File("plugins/EconomyShop", "items.db");
 		BufferedReader items = new BufferedReader(new FileReader(file));
 		String line = items.readLine();
 		while (line != null) {

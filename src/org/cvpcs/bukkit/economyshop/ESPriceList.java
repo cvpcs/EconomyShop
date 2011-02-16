@@ -1,4 +1,4 @@
-package com.bukkit.jjfs85.BetterShop;
+package org.cvpcs.bukkit.economyshop;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,7 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.material.MaterialData;
 import org.bukkit.util.config.*;
 
-public class BSPriceList {
+public class ESPriceList {
 	private final static Logger logger = Logger.getLogger("Minecraft");
 	final Map<Integer, Integer> BuyMap = new HashMap<Integer, Integer>();
 	final Map<Integer, Integer> SellMap = new HashMap<Integer, Integer>();
