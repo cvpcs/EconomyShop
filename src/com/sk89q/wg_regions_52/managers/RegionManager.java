@@ -26,6 +26,7 @@ import com.sk89q.worldedit.Vector;
 import com.sk89q.wg_regions_52.databases.ProtectionDatabase;
 import com.sk89q.wg_regions_52.Region;
 import com.sk89q.wg_regions_52.ApplicableRegionSet;
+import com.sk89q.wg_regions_52.BukkitUtil;
 
 /**
  * An abstract class for getting, setting, and looking up regions. The most
@@ -122,7 +123,7 @@ public abstract class RegionManager {
      * @return applicable region set
      */
     public ApplicableRegionSet getApplicableRegions(org.bukkit.Location loc) {
-        return getApplicableRegions(com.sk89q.worldedit.bukkit.BukkitUtil.toVector(loc));
+        return getApplicableRegions(BukkitUtil.toVector(loc));
     }
 
     /**
