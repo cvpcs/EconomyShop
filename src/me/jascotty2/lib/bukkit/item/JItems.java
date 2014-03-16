@@ -299,7 +299,6 @@ public enum JItems {
 	DARK_GREEN_CARPET("Dark Green Carpet", 171, (short) 13),
 	RED_CARPET("Red Carpet", 171, (short) 14),
 	BLACK_CARPET("Black Carpet", 171, (short) 15),
-	
 	//
 	HARDENED_CLAY("Hardened Clay", 172),
 	COAL_BLOCK("Coal Block", 173),
@@ -900,7 +899,7 @@ public enum JItems {
 		//return isEntity() || itemId < 0 ? null : new ItemStack(itemId, 1, (short) 0, itemData);
 		return isEntity() || itemId < 0 ? null : 
 				(itemData <= Byte.MAX_VALUE ? 
-				new ItemStack(itemId, 1, (short) 0, (byte) itemData) 
+				new ItemStack(itemId, 1, (short) itemData) 
 				: new ItemStack(itemId, 1, itemData));
 	}
 
@@ -908,7 +907,7 @@ public enum JItems {
 		//return isEntity() || itemId < 0 ? null : new ItemStack(itemId, amount, (short) 0, itemData);
 		return isEntity() || itemId < 0 ? null : 
 				(itemData <= Byte.MAX_VALUE ? 
-				new ItemStack(itemId, amount, (short) 0, (byte) itemData) 
+				new ItemStack(itemId, amount, (short) itemData) 
 				: new ItemStack(itemId, amount, itemData));
 	}
 
