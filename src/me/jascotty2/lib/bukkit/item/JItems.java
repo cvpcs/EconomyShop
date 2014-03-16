@@ -188,7 +188,7 @@ public enum JItems {
 	STONE_STAIRS("Stone Stairs", 109, "98@6=4"),
 	MYCELIUM("Mycelium", 110, false),
 	LILLY_PAD("Lilly Pad", 111),
-	NETHER_BRICK("Nether Brick", 112),
+	NETHER_BRICK_BLOCK("Nether Brick Block", 112),
 	NETHER_BRICK_FENCE("Nether Brick Fence", 113, "112@6=6"),
 	NETHER_BRICK_STAIRS("Nether Brick Stairs", 114, "112@6=6"),
 	NETHER_WART_Block("Nether Wart Block", 115, false),
@@ -209,6 +209,7 @@ public enum JItems {
 	EMERALD_ORE("Emerald Ore", 129, false),
 	ENDER_CHEST("Ender Chest", 130),
 	TRIPWIRE_HOOK("Tripwire Hook", 131),
+	// 132: tripwire
 	EMERALD_BLOCK("Emerald Block", 133),
 	SPRUCE_WOODEN_STAIRS("Spruce Wood Stairs", 134),
 	BIRCH_WOOD_STAIRS("Birch Wood Stairs", 135),
@@ -224,6 +225,92 @@ public enum JItems {
 	HUMAN_HEAD_BLOCK("Human Head Block", 144, (short) 3, false),
 	CREEPER_HEAD_BLOCK("Creeper Head Block", 144, (short) 4, false),
 	ANVIL("Anvil", 145),
+	// 1.5.1 - 2
+	TRAPPED_CHEST("Trapped Chest", 146),
+	GOLD_PRESSURE_PLATE("Gold Pressure Plate", 147),
+	IRON_PRESSURE_PLATE("Iron Pressure Plate", 148),
+	DAYLIGHT_SENSOR("Daylight Sensor", 151),
+	REDSTONE_BLOCK("Redstone Block", 152),
+	NETHER_QUARTZ_ORE("Nether Quartz Ore", 153),
+	HOPPER("Hopper",  154),
+	QUARTZ_BLOCK("Quartz Block", 155),
+	QUARTZ_STAIRS("Quartz Stairs", 156),
+	ACTIVATOR_RAIL("Activator Rail", 157),
+	DROPPER("Dropper", 158),
+	// 1.6
+	//colored clay
+	WHITE_STAINED_CLAY("White Stained Clay", 159, (short) 0),
+	ORANGE_STAINED_CLAY("Orange Stained Clay", 159, (short) 1),
+	MAGENTA_STAINED_CLAY("Magenta Stained Clay", 159, (short) 2),
+	LIGHT_BLUE_STAINED_CLAY("Light Blue Stained Clay", 159, (short) 3),
+	YELLOW_STAINED_CLAY("Yellow Stained Clay", 159, (short) 4),
+	LIGHT_GREEN_STAINED_CLAY("Light Green Stained Clay", 159, (short) 5),
+	PINK_STAINED_CLAY("Pink Stained Clay", 159, (short) 6),
+	DARK_GRAY_STAINED_CLAY("Dark Gray Stained Clay", 159, (short) 7),
+	LIGHT_GRAY_STAINED_CLAY("Light Gray Stained Clay", 159, (short) 8),
+	CYAN_STAINED_CLAY("Cyan Stained Clay", 159, (short) 9),
+	PURPLE_STAINED_CLAY("Purple Stained Clay", 159, (short) 10),
+	BLUE_STAINED_CLAY("Blue Stained Clay", 159, (short) 11),
+	BROWN_STAINED_CLAY("Brown Stained Clay", 159, (short) 12),
+	DARK_GREEN_STAINED_CLAY("Dark Green Stained Clay", 159, (short) 13),
+	RED_STAINED_CLAY("Red Stained Clay", 159, (short) 14),
+	BLACK_STAINED_CLAY("Black Stained Clay", 159, (short) 15),
+	//colored stained glass
+	WHITE_STAINED_GLASS("White Stained Glass", 160, (short) 0),
+	ORANGE_STAINED_GLASS("Orange Stained Glass", 160, (short) 1),
+	MAGENTA_STAINED_GLASS("Magenta Stained Glass", 160, (short) 2),
+	LIGHT_BLUE_STAINED_GLASS("Light Blue Stained Glass", 160, (short) 3),
+	YELLOW_STAINED_GLASS("Yellow Stained Glass", 160, (short) 4),
+	LIGHT_GREEN_STAINED_GLASS("Light Green Stained Glass", 160, (short) 5),
+	PINK_STAINED_GLASS("Pink Stained Glass", 160, (short) 6),
+	DARK_GRAY_STAINED_GLASS("Dark Gray Stained Glass", 160, (short) 7),
+	LIGHT_GRAY_STAINED_GLASS("Light Gray Stained Glass", 160, (short) 8),
+	CYAN_STAINED_GLASS("Cyan Stained Glass", 160, (short) 9),
+	PURPLE_STAINED_GLASS("Purple Stained Glass", 160, (short) 10),
+	BLUE_STAINED_GLASS("Blue Stained Glass", 160, (short) 11),
+	BROWN_STAINED_GLASS("Brown Stained Glass", 160, (short) 12),
+	DARK_GREEN_STAINED_GLASS("Dark Green Stained Glass", 160, (short) 13),
+	RED_STAINED_GLASS("Red Stained Glass", 160, (short) 14),
+	BLACK_STAINED_GLASS("Black Stained Glass", 160, (short) 15),
+	
+	ACACIA_LEAVES("Acacia Leaves", 161, (byte) 0),
+	DARK_OAK_LEAVES("Dark Oak Leaves", 161, (byte) 1),
+	ACACIA_LOG("Acacia Leaves", 161, (byte) 0),
+	DARK_OAK_LOG("Dark Oak Leaves", 161, (byte) 1),
+	ACACIA_WOOD_STAIRS("Acacia Wood Stairs", 163),
+	DARK_OAK_WOOD_STAIRS("Dark Oak Wood Stairs", 164),
+	//SLIME_BLOCK("Slime Block", 165),
+	//MINECRAFT_BARRIER("Barrier", 166),
+	//IRON_TRAPDOOR("Iron Trapdoor", 167),
+	HAY_BLOCK("Hay Block", 170),
+	WHITE_CARPET("White Carpet", 171, (short) 0),
+	ORANGE_CARPET("Orange Carpet", 171, (short) 1),
+	MAGENTA_CARPET("Magenta Carpet", 171, (short) 2),
+	LIGHT_BLUE_CARPET("Light Blue Carpet", 171, (short) 3),
+	YELLOW_CARPET("Yellow Carpet", 171, (short) 4),
+	LIGHT_GREEN_CARPET("Light Green Carpet", 171, (short) 5),
+	PINK_CARPET("Pink Carpet", 171, (short) 6),
+	DARK_GRAY_CARPET("Dark Gray Carpet", 171, (short) 7),
+	LIGHT_GRAY_CARPET("Light Gray Carpet", 171, (short) 8),
+	CYAN_CARPET("Cyan Carpet", 171, (short) 9),
+	PURPLE_CARPET("Purple Carpet", 171, (short) 10),
+	BLUE_CARPET("Blue Carpet", 171, (short) 11),
+	BROWN_CARPET("Brown Carpet", 171, (short) 12),
+	DARK_GREEN_CARPET("Dark Green Carpet", 171, (short) 13),
+	RED_CARPET("Red Carpet", 171, (short) 14),
+	BLACK_CARPET("Black Carpet", 171, (short) 15),
+	
+	//
+	HARDENED_CLAY("Hardened Clay", 172),
+	COAL_BLOCK("Coal Block", 173),
+	PACKED_ICE("Packed Ice", 174),
+	SUNFLOWER("Sunflower", 175, (byte) 0),
+	LILAC("Lilac", 175, (byte) 1),
+	DOUBLE_TALL_GRASS("Double Tall Grass", 175, (byte) 2),
+	LARGE_FERN("Large Fern", 175, (byte) 3),
+	ROSE_BUSH("Rose Bush", 175, (byte) 4),
+	PEONY("Peony", 175, (byte) 5),
+	//
 	// Items
 	IRON_SPADE("Iron Shovel", 256, "280@2+265", (short) 251),
 	IRON_PICKAXE("Iron Pickaxe", 257, "280@2+265@3", (short) 251),
@@ -455,7 +542,20 @@ public enum JItems {
 	FIREWORK_ROCKET("Firework Rocket", 401),
 	FIREWORK_STAR("Firework Star", 402),
 	ENCHANTED_BOOK("Enchanted Book", 403),
-	
+	// 1.5.1 - 2
+	REDSTONE_COMPARATOR("Redstone Comparator", 404),
+	NETHER_BRICK("Nether Brick", 405),
+	NETHER_QUARTZ("Nether Quartz", 406),
+	TNT_MINECART("TNT Minecart", 407),
+	HOPPER_MINECART("Hopper Minecart", 408),
+	// 1.6
+	IRON_HORSE_ARMOR("Iron Horse Armor", 417),
+	GOLD_HORSE_ARMOR("Gold Horse Armor", 418),
+	DIAMOND_HORSE_ARMOR("Diamond Horse Armor", 419),
+	LEAD("Lead", 420),
+	NAME_TAG("Name Tag", 421),
+	// 1.7
+	COMMAND_BLOCK_MINECART("Command Block Minecart", 422),
 	// Records
 	GOLD_RECORD("13 Disk", 2256, 1), // Gold Record
 	GREEN_RECORD("Cat Disc", 2257, 1), // Green Record
@@ -467,7 +567,9 @@ public enum JItems {
 	BLACK_RECORD("Stal Disc", 2263, 1),
 	WHITE_RECORD("Strad Disc", 2264, 1),
 	GREEN_LIME_RECORD("Ward Disc", 2265, 1), // has half green, half lime
-	BROKEN_RECORD("11 Disc", 2266, 1);
+	BROKEN_RECORD("11 Disc", 2266, 1),
+	// 1.6?
+	CYAN_RECORD("Wait Disk", 2267, 1);
 // Item Information
 	private int itemId;
 	private short itemData;
