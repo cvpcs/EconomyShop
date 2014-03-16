@@ -20,9 +20,6 @@ package com.sk89q.wg_regions_52;
 
 import java.util.List;
 import java.util.ArrayList;
-import com.sk89q.worldedit.BlockVector;
-import com.sk89q.worldedit.BlockVector2D;
-import com.sk89q.worldedit.Vector;
 import org.bukkit.Location;
 
 public class PolygonalRegion extends Region {
@@ -33,20 +30,34 @@ public class PolygonalRegion extends Region {
     private BlockVector min;
     private BlockVector max;
 
-    public PolygonalRegion(String id, List<BlockVector2D> points, int minY, int maxY) {
+    public PolygonalRegion(String id, List/*<BlockVector2D>*/ points, int minY, int maxY) {
         super(id);
+		if(points == null || points.isEmpty()) {
+			throw new IllegalArgumentException("Points cannot be empty");
+		}
+		Object p1 = points.get(0);
+		boolean useWE = p1 instanceof com.sk89q.worldedit.BlockVector2D;
+		if(!useWE && !(p1 instanceof BlockVector2D)) {
+			throw new IllegalArgumentException("Points must be of type BlockVector2D");
+		}
+		
         this.points = points;
         this.minY = minY;
         this.maxY = maxY;
 
-        int minX = points.get(0).getBlockX();
-        int minZ = points.get(0).getBlockZ();
-        int maxX = points.get(0).getBlockX();
-        int maxZ = points.get(0).getBlockZ();
+		
+        int minX = useWE ? ((com.sk89q.worldedit.BlockVector2D) p1).getBlockX()
+				: ((BlockVector2D) p1).getBlockX();
+        int minZ = useWE ? ((com.sk89q.worldedit.BlockVector2D) p1).getBlockZ()
+				: ((BlockVector2D) p1).getBlockZ();
+        int maxX = minX;
+        int maxZ = minZ;
 
-        for (final BlockVector2D v : points) {
-            int x = v.getBlockX();
-            int z = v.getBlockZ();
+        for (final Object v : points) {
+            int x = useWE ? ((com.sk89q.worldedit.BlockVector2D) v).getBlockX()
+					: ((BlockVector2D) v).getBlockX();
+            int z = useWE ? ((com.sk89q.worldedit.BlockVector2D) v).getBlockZ()
+					: ((BlockVector2D) v).getBlockZ();
             if (x < minX) {
                 minX = x;
             }

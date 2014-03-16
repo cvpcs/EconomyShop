@@ -54,6 +54,19 @@ public class CuboidRegion extends Region {
     }
 
     /**
+     * Construct a new instance of this cuboid region.
+     *
+     * @param id
+     * @param min 
+     * @param max 
+     */
+    public CuboidRegion(String id, com.sk89q.worldedit.BlockVector min, com.sk89q.worldedit.BlockVector max) {
+        super(id);
+        this.min = new BlockVector(min);
+        this.max = new BlockVector(max);
+    }
+	
+    /**
      * Get the lower point of the cuboid.
      *
      * @return min point

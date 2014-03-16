@@ -22,11 +22,11 @@ package com.sk89q.wg_regions_52.managers;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import com.sk89q.worldedit.Vector;
 import com.sk89q.wg_regions_52.databases.ProtectionDatabase;
 import com.sk89q.wg_regions_52.Region;
 import com.sk89q.wg_regions_52.ApplicableRegionSet;
 import com.sk89q.wg_regions_52.BukkitUtil;
+import com.sk89q.wg_regions_52.Vector;
 
 /**
  * An abstract class for getting, setting, and looking up regions. The most

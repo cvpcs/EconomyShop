@@ -25,8 +25,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
-import com.sk89q.worldedit.*;
-import com.sk89q.worldedit.Vector;
 
 public class BukkitUtil {
     private BukkitUtil()  {

@@ -21,8 +21,6 @@ package com.sk89q.wg_regions_52;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.sk89q.worldedit.BlockVector;
-import com.sk89q.worldedit.Vector;
 import org.bukkit.Location;
 
 public class GlobalRegion extends Region {

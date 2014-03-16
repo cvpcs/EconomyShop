@@ -26,9 +26,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import com.sk89q.worldedit.BlockVector;
-import com.sk89q.worldedit.BlockVector2D;
-import com.sk89q.worldedit.Vector;
+import com.sk89q.wg_regions_52.BlockVector;
+import com.sk89q.wg_regions_52.BlockVector2D;
+import com.sk89q.wg_regions_52.Vector;
 
 import com.sk89q.wg_regions_52.*;
 import com.sk89q.wg_regions_52.Region.CircularInheritanceException;

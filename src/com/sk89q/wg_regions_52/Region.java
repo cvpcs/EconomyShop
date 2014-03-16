@@ -19,8 +19,6 @@
 
 package com.sk89q.wg_regions_52;
 
-import com.sk89q.worldedit.BlockVector;
-import com.sk89q.worldedit.Vector;
 import java.util.List;
 import java.util.regex.Pattern;
 import org.bukkit.Location;

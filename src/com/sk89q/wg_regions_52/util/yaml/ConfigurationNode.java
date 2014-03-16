@@ -23,9 +23,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.sk89q.worldedit.BlockVector2D;
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.Vector2D;
+import com.sk89q.wg_regions_52.BlockVector2D;
+import com.sk89q.wg_regions_52.Vector;
+import com.sk89q.wg_regions_52.Vector2D;
 
 /**
  * Represents a configuration node.
